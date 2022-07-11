@@ -1,3 +1,4 @@
+import axios from "axios";
 import React from "react";
 
 const TableContext = React.createContext();
@@ -53,8 +54,18 @@ function TableProvider(props) {
   }, []);
 
   //URL base for API requests
-  // const URL = 'http://msdocs-python-test-webapp-117.azurewebsites.net/api/v1/';
-  const URL = 'http://127.0.0.1:8000/'
+  const api = axios.create({
+    baseURL: 'http://127.0.0.1:8000/',
+    headers: {
+      'Content-Type': 'application/json;charset=utf-8',
+      'Authorization': 'Token 7d6c96590e8daa16df57b5943066a7df76f1c6b3'
+    }
+  })
+
+  const URL = 'http://127.0.0.1:8000/';
+
+
+
 
   const datosBaseParaLaTabla = [
     "Consecutivo",
@@ -105,67 +116,56 @@ function TableProvider(props) {
 
     apis();
     setOmniClass(41);
+    fetchMateriales();
+  };
 
-    const materials = await fetch(`${URL}apiMateriales/ListarMateriales/`)
-    const materialsData = await materials.json();
-    const numero = materialsData.count + 1;
+  const fetchMateriales = async () => {
+
+    const { data: materials } = await api(`apiMateriales/ListarMateriales/`)
+    const numero = materials.count + 1;
     await setMaterial(String(numero).padStart(5, 0));
 
-    const listarEsfuerzo = await fetch(`${URL}apiMateriales/ListarEsfuerzo/`)
-    const listarEsfuerzoData = await listarEsfuerzo.json();
-    await setListarEsfuerzo(listarEsfuerzoData.results);
+    const { data: listarEsfuerzo } = await api(`apiMateriales/ListarEsfuerzo/`)
+    await setListarEsfuerzo(listarEsfuerzo.results);
 
-    const esfuerzo = await fetch(`${URL}apiMateriales/ListarValorEsfuerzo/`)
-    const esfuerzoData = await esfuerzo.json();
-    await setListarValorEsfuerzo(esfuerzoData.results);
+    const { data: esfuerzo } = await api(`apiMateriales/ListarValorEsfuerzo/`)
+    await setListarValorEsfuerzo(esfuerzo.results);
 
-    const listarUnidad = await fetch(`${URL}apiMateriales/ListarUnidadesMedida/`)
-    const listarUnidadData = await listarUnidad.json();
-    await setListarUnidadesMedida(listarUnidadData.results);
+    const { data: listarUnidad } = await api(`apiMateriales/ListarUnidadesMedida/`)
+    await setListarUnidadesMedida(listarUnidad.results);
 
-    const listarTipoResistencia = await fetch(`${URL}apiMateriales/ListarTipoResistencia/`)
-    const listarTipoResistenciaData = await listarTipoResistencia.json();
-    await setListarTipoResistencia(listarTipoResistenciaData.results);
+    const { data: listarTipoResistencia } = await api(`apiMateriales/ListarTipoResistencia/`)
+    await setListarTipoResistencia(listarTipoResistencia.results);
 
-    const listarAplPrincipales = await fetch(`${URL}apiMateriales/ListarAplPrincipales/`)
-    const listarAplPrincipalesData = await listarAplPrincipales.json();
-    await setListarAplPrincipales(listarAplPrincipalesData.results);
+    const { data: listarAplPrincipales } = await api(`apiMateriales/ListarAplPrincipales/`)
+    await setListarAplPrincipales(listarAplPrincipales.results);
 
-    const listarTMA = await fetch(`${URL}apiMateriales/ListarTMA/`)
-    const listarTMAData = await listarTMA.json();
-    await setListarTMA(listarTMAData.results);
+    const { data: listarTMA } = await api(`apiMateriales/ListarTMA/`)
+    await setListarTMA(listarTMA.results);
 
-    const listarRevenimiento = await fetch(`${URL}apiMateriales/ListarRevenimiento/`)
-    const listarRevenimientoData = await listarRevenimiento.json();
-    await setListarRevenimiento(listarRevenimientoData.results);
+    const { data: listarRevenimiento } = await api(`apiMateriales/ListarRevenimiento/`)
+    await setListarRevenimiento(listarRevenimiento.results);
 
-    const listarDensidad = await fetch(`${URL}apiMateriales/ListarDensidad/`)
-    const listarDensidadData = await listarDensidad.json();
-    await setListarDensidad(listarDensidadData.results);
+    const { data: listarDensidad } = await api(`apiMateriales/ListarDensidad/`)
+    await setListarDensidad(listarDensidad.results);
 
-    const listarSistColocacion = await fetch(`${URL}apiMateriales/ListarSistColocacion/`)
-    const listarSistColocacionData = await listarSistColocacion.json();
-    await setListarSistColocacion(listarSistColocacionData.results);
+    const { data: listarSistColocacion } = await api(`apiMateriales/ListarSistColocacion/`)
+    await setListarSistColocacion(listarSistColocacion.results);
 
-    const listarClasExposicion = await fetch(`${URL}apiMateriales/ListarClasExposicion/`)
-    const listarClasExposicionData = await listarClasExposicion.json();
-    await setListarClasExposicion(listarClasExposicionData.results);
+    const { data: listarClasExposicion } = await api(`apiMateriales/ListarClasExposicion/`)
+    await setListarClasExposicion(listarClasExposicion.results);
 
-    const listarFlujoRev = await fetch(`${URL}apiMateriales/ListarFlujoRev/`)
-    const listarFlujoRevData = await listarFlujoRev.json();
-    await setListarFlujoRev(listarFlujoRevData.results);
+    const { data: listarFlujoRev } = await api(`apiMateriales/ListarFlujoRev/`)
+    await setListarFlujoRev(listarFlujoRev.results);
 
-    const listarIonCloruro = await fetch(`${URL}apiMateriales/ListarIonCloruro/`)
-    const listarIonCloruroData = await listarIonCloruro.json();
-    await setListarIonCloruro(listarIonCloruroData.results);
+    const { data: listarIonCloruro } = await api(`apiMateriales/ListarIonCloruro/`)
+    await setListarIonCloruro(listarIonCloruro.results);
 
-    const listarFibraConcre = await fetch(`${URL}apiMateriales/ListarFibraConcre/`)
-    const listarFibraConcreData = await listarFibraConcre.json();
-    await setListarFibraConcre(listarFibraConcreData.results);
+    const { data: listarFibraConcre } = await api(`apiMateriales/ListarFibraConcre/`)
+    await setListarFibraConcre(listarFibraConcre.results);
 
-    const listarConcretosMaterial = await fetch(`${URL}apiMateriales/ListarConcretosMateriales/`);
-    const listarConcretosMaterialesData = await listarConcretosMaterial.json();
-    await setListarConcretosMateriales(listarConcretosMaterialesData);
+    const { data: listarConcretosMaterial } = await api(`apiMateriales/ListarConcretosMateriales/`);
+    await setListarConcretosMateriales(listarConcretosMaterial);
 
     // await setDatosConcreto(Object.keys(listarConcretosMaterialesData[0]));
 
@@ -201,38 +201,39 @@ function TableProvider(props) {
 
 
     setDatoBaseTabla(datosBaseParaLaTabla);
-  };
+  }
 
   const apis = async () => {
+    console.log(omniClass)
     //Level 1 data
-    const data = await fetch(`${URL}apiOMC${omniClass}/ListarOMC${omniClass}Nivel1/`)
-    const users = await data.json();
-    await setNivel1(users.results);
-    await setDatos(users.results);
+    const { data } = await api(`apiOMC${omniClass}/ListarOMC${omniClass}Nivel1/`)
+    // const users = await data.json();
+    await setNivel1(data.results);
+    await setDatos(data.results);
 
     //Level 2 data
-    const data2 = await fetch(`${URL}apiOMC${omniClass}/ListarOMC${omniClass}Nivel2/`)
-    const users2 = await data2.json();
-    await setNivel2(users2.results);
+    const { data: data2 } = await api(`apiOMC${omniClass}/ListarOMC${omniClass}Nivel2/`)
+    // const users2 = await data2.json();
+    await setNivel2(data2.results);
 
     //Level 3 data
-    const data3 = await fetch(`${URL}apiOMC${omniClass}/ListarOMC${omniClass}Nivel3/`)
-    const users3 = await data3.json();
-    await setNivel3(users3.results);
+    const { data: data3 } = await api(`apiOMC${omniClass}/ListarOMC${omniClass}Nivel3/`)
+    // const users3 = await data3.json();
+    await setNivel3(data3.results);
 
     //Level 4 data
-    const data4 = await fetch(`${URL}apiOMC${omniClass}/ListarOMC${omniClass}Nivel4/`)
-    const users4 = await data4.json();
-    await setNivel4(users4.results);
+    const { data: data4 } = await api(`apiOMC${omniClass}/ListarOMC${omniClass}Nivel4/`)
+    // const users4 = await data4.json();
+    await setNivel4(data4.results);
 
     //Level 5 data
-    const data5 = await fetch(`${URL}apiOMC${omniClass}/ListarOMC${omniClass}Nivel5/`)
-    const users5 = await data5.json();
-    await setNivel5(users5.results);
+    const { data: data5 } = await api(`apiOMC${omniClass}/ListarOMC${omniClass}Nivel5/`)
+    // const users5 = await data5.json();
+    await setNivel5(data5.results);
     //Level 6 data
-    const data6 = await fetch(`${URL}apiOMC${omniClass}/ListarOMC${omniClass}Nivel6/`)
-    const users6 = await data6.json();
-    await setNivel6(users6.results);
+    const { data: data6 } = await api(`apiOMC${omniClass}/ListarOMC${omniClass}Nivel6/`)
+    // const users6 = await data6.json();
+    await setNivel6(data6.results);
   }
 
 
@@ -366,18 +367,19 @@ function TableProvider(props) {
   }
 
   const getVistaParcial = async (codigo) => {
-    const materials = await fetch(`${URL}apiMateriales/ListarMateriales/`)
-    const materialsData = await materials.json();
-    const numero = materialsData.count + 1;
+    const { data: materials } = await api(`apiMateriales/ListarMateriales/`)
+    // const materialsData = await materials.json();
+    const numero = materials.count + 1;
     await setMaterial(String(numero).padStart(5, 0));
     await setNumMaterial(numero);
-    const concreto = await fetch(`${URL}apiMateriales/ListarConcreto/`)
-    const concretoData = await concreto.json();
-    const numeroConcreto = concretoData.count + 1;
+    const { data: concreto } = await api(`apiMateriales/ListarConcreto/`)
+    // const concretoData = await concreto.json();
+    const numeroConcreto = concreto.count + 1;
     await setConcreto(numeroConcreto);
     const reg = datos.filter(reg => reg.Codigo === codigo)
     await setVistaParcial(reg)
     setFormularioActivate(true)
+    unidadesConcreto()
   }
 
 
@@ -432,6 +434,36 @@ function TableProvider(props) {
     setDatoBaseTabla(datosBaseParaLaTabla);
     setDatosConcreto(datosFaltantesTabla);
   };
+
+  const [datosConcretos, setDatosConcretos] = React.useState([])
+
+  const unidadesConcreto = async () => {
+
+    var datooo = {
+      0: [76, 78, 79,],
+      1: [5, 7, 1,],
+      2: [65, 67,],
+      3: [83],
+      4: [76, 78, 79,],
+      5: [65,],
+      6: [85,],
+      7: [38, 37,],
+    }
+
+    console.log('first')
+    var x = []
+    datooo[0].forEach((element) => {
+      const aw = listarUnidadesMedida.filter(dat => dat.idUniMed === element)[0].Unidad
+      x.push(aw)
+      console.log(aw)
+      console.log(aw[0].Unidad)
+    });
+    console.log(x)
+    await setDatosConcretos(x)
+    console.log(datosConcretos)
+  }
+
+
   return (
     <TableContext.Provider value={{
       volver,
@@ -479,6 +511,11 @@ function TableProvider(props) {
       addTable,
       deleteTableMaterials,
       resetTabla,
+      datosConcretos,
+      fetchMateriales,
+      setOmniClass,
+      apis,
+      api,
     }}>
       {props.children}
     </TableContext.Provider>

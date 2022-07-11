@@ -24,6 +24,7 @@ function VistaParcial() {
     setFormularioActivate,
     listarFibraConcre,
     setDatosModal,
+    api,
   } = React.useContext(TableContext);
 
   const [esfuerzo, setEsfuerzo] = React.useState("");
@@ -135,7 +136,7 @@ function VistaParcial() {
       redirect: "follow",
     };
 
-    fetch("http://127.0.0.1:8000/apiMateriales/CrearMaterial/", requestOptions)
+    api("http://127.0.0.1:8000/apiMateriales/CrearMaterial/", requestOptions)
       .then((response) => response.text())
       .then((result) => console.log(result))
       .catch((error) => console.log("error", error));
@@ -199,6 +200,7 @@ function VistaParcial() {
     };
     //caracteristica especial
     console.table(datas);
+    console.log(datas);
 
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
@@ -233,6 +235,17 @@ function VistaParcial() {
     } ${listarTipoResistencia[resistenciaValorEsfuerzo - 1].Tipo}`;
     console.log(Descripcion);
     setDatosModal(Descripcion);
+  };
+
+  var datooo = {
+    0: [76, 78, 79],
+    1: [5, 7, 1],
+    2: [65, 67],
+    3: [83],
+    4: [76, 78, 79],
+    5: [65],
+    6: [85],
+    7: [38, 37],
   };
 
   return (
@@ -291,11 +304,11 @@ function VistaParcial() {
             name="idEsfuerzo"
           >
             <option>Selecciona...</option>
-            {listarEsfuerzo.map((value, index) => (
-              <option key={index} value={value.idEsfuerzo}>
-                {value.tipoEsfuerzo}
+            {
+              <option value={1}>
+                Resistencia a la compresión del concreto
               </option>
-            ))}
+            }
           </select>
         </label>
         {/* <!--ValorEsfuerzo--> */}
@@ -323,9 +336,20 @@ function VistaParcial() {
             name="idUniMedVE"
           >
             <option value="">Selecciona...</option>
-            {listarUnidadesMedida.map((value, index) => (
-              <option key={index} value={value.idUniMed}>
-                {value.Unidad}
+            {datooo[0].map((value, index) => (
+              <option
+                key={index}
+                value={
+                  listarUnidadesMedida.filter(
+                    (dat) => dat.idUniMed === value
+                  )[0].idUniMed
+                }
+              >
+                {
+                  listarUnidadesMedida.filter(
+                    (dat) => dat.idUniMed === value
+                  )[0].Unidad
+                }
               </option>
             ))}
           </select>
@@ -390,9 +414,20 @@ function VistaParcial() {
             name="idUniMedTMA"
           >
             <option value="">Selecciona...</option>
-            {listarUnidadesMedida.map((value, index) => (
-              <option key={index} value={value.idUniMed}>
-                {value.Unidad}
+            {datooo[1].map((value, index) => (
+              <option
+                key={index}
+                value={
+                  listarUnidadesMedida.filter(
+                    (dat) => dat.idUniMed === value
+                  )[0].idUniMed
+                }
+              >
+                {
+                  listarUnidadesMedida.filter(
+                    (dat) => dat.idUniMed === value
+                  )[0].Unidad
+                }
               </option>
             ))}
           </select>
@@ -422,9 +457,20 @@ function VistaParcial() {
             name="idUniMedR"
           >
             <option value="">Selecciona...</option>
-            {listarUnidadesMedida.map((value, index) => (
-              <option key={index} value={value.idUniMed}>
-                {value.Unidad}
+            {datooo[1].map((value, index) => (
+              <option
+                key={index}
+                value={
+                  listarUnidadesMedida.filter(
+                    (dat) => dat.idUniMed === value
+                  )[0].idUniMed
+                }
+              >
+                {
+                  listarUnidadesMedida.filter(
+                    (dat) => dat.idUniMed === value
+                  )[0].Unidad
+                }
               </option>
             ))}
           </select>

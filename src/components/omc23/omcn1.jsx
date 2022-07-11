@@ -22,7 +22,7 @@ export default function Omcn1(props) {
   }
 
   const selectRow = (e) => {
-    const selectRowTag = e.nativeEvent.path[1];
+    const selectRowTag = e.currentTarget;
     if (selectRowTag.classList.contains("row-selected")) {
     } else {
       cleanTr();

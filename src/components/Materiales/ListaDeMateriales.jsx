@@ -10,8 +10,20 @@ import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
 
 function ListaDeMateriales() {
-  const { listarConcretosMateriales, datoBaseTabla, resetTabla, datos } =
-    React.useContext(TableContext);
+  const {
+    listarConcretosMateriales,
+    datoBaseTabla,
+    resetTabla,
+    listarTMA,
+    listarValorEsfuerzo,
+    listarTipoResistencia,
+    listarDensidad,
+    listarFlujoRev,
+    listarRevenimiento,
+    listarFibraConcre,
+    listarClasExposicion,
+    listarSistColocacion,
+  } = React.useContext(TableContext);
 
   const [estructura, setEstructura] = React.useState(false);
 
@@ -85,8 +97,6 @@ function ListaDeMateriales() {
   //   "tipoSistema",
   // ];
 
-  console.log(datoBaseTabla);
-
   return (
     <div className="container vh-100">
       <h2 className="h1 text-center">LISTA DE MATERIALES/PRODUCTOS</h2>
@@ -144,21 +154,41 @@ function ListaDeMateriales() {
         <div className="col-12 col-md-2 py-2">
           <select name="" id="" className="form-select">
             <option value="">TMA</option>
+            {listarTMA.map((value, index) => (
+              <option key={index} value={value.idTma}>
+                {value.valTma}
+              </option>
+            ))}
           </select>
         </div>
         <div className="col-12 col-md-2 py-2">
           <select name="" id="" className="form-select">
             <option value="">Valor del Esfuerzo</option>
+            {listarValorEsfuerzo.map((valorEs, index) => (
+              <option key={index} value={valorEs.idValEsf}>
+                {valorEs.Valor}
+              </option>
+            ))}
           </select>
         </div>
         <div className="col-12 col-md-2 py-2">
           <select name="" id="" className="form-select">
             <option value="">Tipo de Esfuerzo</option>
+            {
+              <option value={1}>
+                Resistencia a la compresión del concreto
+              </option>
+            }
           </select>
         </div>
         <div className="col-12 col-md-2 py-2">
           <select name="" id="" className="form-select">
             <option value="">Tipo de Resistencia</option>
+            {listarTipoResistencia.map((value, index) => (
+              <option key={index} value={value.idTipoResist}>
+                {value.Tipo}
+              </option>
+            ))}
           </select>
         </div>
       </div>
@@ -170,7 +200,7 @@ function ListaDeMateriales() {
         >
           <CSVLink
             data={listarConcretosMateriales}
-            filename={"listarConcretosMateriales.csv"}
+            filename={"listarConcretosMateriales.xls"}
             className="h3 me-1 text-success"
           >
             <BiExport />
@@ -209,6 +239,12 @@ function ListaDeMateriales() {
         <div className="col-12 col-md-2 py-2">
           <select name="" id="" className="form-select">
             <option value="">Densidad</option>
+            <option value="">Selecciona...</option>
+            {listarDensidad.map((value, index) => (
+              <option key={index} value={value.idDensidad}>
+                {value.valDensidad}
+              </option>
+            ))}
           </select>
         </div>
         <div className="col-12 col-md-2 py-2">
@@ -224,11 +260,21 @@ function ListaDeMateriales() {
         <div className="col-12 col-md-2 py-2">
           <select name="" id="" className="form-select">
             <option value="">Flujo de revenimiento</option>
+            {listarFlujoRev.map((value, index) => (
+              <option key={index} value={value.idFlujoRev}>
+                {value.valFluRev}
+              </option>
+            ))}
           </select>
         </div>
         <div className="col-12 col-md-2 py-2">
           <select name="" id="" className="form-select">
             <option value="">Valor de revenimiento</option>
+            {listarRevenimiento.map((value, index) => (
+              <option key={index} value={value.idReven}>
+                {value.valRev}
+              </option>
+            ))}
           </select>
         </div>
       </div>
@@ -236,6 +282,11 @@ function ListaDeMateriales() {
         <div className="col-12 col-md-3 py-2">
           <select name="" id="" className="form-select">
             <option value="">Fibra</option>
+            {listarFibraConcre.map((value, index) => (
+              <option key={index} value={value.idFibraCon}>
+                {value.Fibras}
+              </option>
+            ))}
           </select>
         </div>
         <div className="col-12 col-md-3 py-2">
@@ -246,11 +297,21 @@ function ListaDeMateriales() {
         <div className="col-12 col-md-3 py-2">
           <select name="" id="" className="form-select">
             <option value="">Categoria de exposición</option>
+            {listarClasExposicion.map((value, index) => (
+              <option key={index} value={value.idClasExpo}>
+                {value.Condicion}
+              </option>
+            ))}
           </select>
         </div>
         <div className="col-12 col-md-3 py-2">
           <select name="" id="" className="form-select">
             <option value="">Sistema de colocación</option>
+            {listarSistColocacion.map((value, index) => (
+              <option key={index} value={value.idSistColoc}>
+                {value.tipoSistema}
+              </option>
+            ))}
           </select>
         </div>
       </div>

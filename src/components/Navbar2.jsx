@@ -9,6 +9,7 @@ import { BsTools } from "react-icons/bs";
 import { FaUserAlt } from "react-icons/fa";
 import { AiFillDownCircle } from "react-icons/ai";
 import { SiSuperuser } from "react-icons/si";
+import { TableContext } from "../context/Materiales/TableContext";
 export default function Navbar() {
   const [estadoUser, setestadoUser] = useState("bx bx-menu");
 
@@ -58,6 +59,15 @@ export default function Navbar() {
     subList.toggleAttribute("hidden");
   };
 
+  const {
+    fetchMateriales,
+    setOmniClass,
+    omniClass,
+    apis,
+    omniclass23,
+    omniclass41,
+  } = React.useContext(TableContext);
+
   return (
     <div id="body-pd">
       <header className="header" id="header">
@@ -106,11 +116,23 @@ export default function Navbar() {
                 <GiMaterialsScience className="bx bx-user nav_icon" />
                 <span className="nav_name">MATERIALES</span>
               </NavLink>
-              <NavLink to="/omniclass" className="nav_link">
+              <NavLink
+                to="/omniclass"
+                onClick={() => {
+                  apis();
+                  omniClass === 23 ? omniclass23() : omniclass41();
+                  omniClass === 23 ? setOmniClass(41) : setOmniClass(23);
+                }}
+                className="nav_link"
+              >
                 <BiCuboid className="bx bx-bookmark nav_icon" />
                 <span className="nav_name">PRODUCTOS</span>
               </NavLink>
-              <NavLink to="/listaDeMateriales" className="nav_link">
+              <NavLink
+                to="/listaDeMateriales"
+                onClick={fetchMateriales}
+                className="nav_link"
+              >
                 <i className="bx bx-message-square-detail nav_icon"></i>
                 <span className="nav_name">ACTIVIDADES</span>
               </NavLink>
