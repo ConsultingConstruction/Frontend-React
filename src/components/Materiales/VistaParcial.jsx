@@ -96,6 +96,7 @@ function VistaParcial() {
       palabrasClave,
       comentarios,
     };
+    console.log("hola");
 
     console.table(datosGenerales);
 
@@ -123,8 +124,13 @@ function VistaParcial() {
       palabrasCve: palabrasClave,
       codigoBimsa: null,
     };
+    console.log(datas);
 
     var myHeaders = new Headers();
+    myHeaders.append(
+      "Authorization",
+      "Token 5bfe85b10885d29724e54adf95b9ab7aaa6d2b04"
+    );
     myHeaders.append("Content-Type", "application/json");
 
     var raw = JSON.stringify(datas);
@@ -136,7 +142,7 @@ function VistaParcial() {
       redirect: "follow",
     };
 
-    api("http://127.0.0.1:8000/apiMateriales/CrearMaterial/", requestOptions)
+    fetch("http://127.0.0.1:8000/apiMateriales/CrearMaterial/", requestOptions)
       .then((response) => response.text())
       .then((result) => console.log(result))
       .catch((error) => console.log("error", error));
@@ -160,9 +166,13 @@ function VistaParcial() {
       fk_AplPrinc: aplPrincipales,
     };
     //concreto
-    console.table(datas);
+    console.log(datas);
 
     var myHeaders = new Headers();
+    myHeaders.append(
+      "Authorization",
+      "Token 5bfe85b10885d29724e54adf95b9ab7aaa6d2b04"
+    );
     myHeaders.append("Content-Type", "application/json");
 
     var raw = JSON.stringify(datas);
@@ -177,7 +187,7 @@ function VistaParcial() {
     fetch("http://127.0.0.1:8000/apiMateriales/CrearConcreto/", requestOptions)
       .then((response) => response.text())
       .then((result) => console.log(result))
-      .catch((error) => console.log("error", error));
+      .catch((error) => console.log("error crear concreto", error));
   };
 
   const caracteristicasEspeciales = () => {
@@ -203,6 +213,10 @@ function VistaParcial() {
     console.log(datas);
 
     var myHeaders = new Headers();
+    myHeaders.append(
+      "Authorization",
+      "Token 5bfe85b10885d29724e54adf95b9ab7aaa6d2b04"
+    );
     myHeaders.append("Content-Type", "application/json");
 
     var raw = JSON.stringify(datas);
@@ -217,7 +231,9 @@ function VistaParcial() {
     fetch("http://127.0.0.1:8000/apiMateriales/CrearCaracEspe/", requestOptions)
       .then((response) => response.text())
       .then((result) => console.log(result))
-      .catch((error) => console.log("error", error));
+      .catch((error) =>
+        console.log("error crear caracteristicas Especiales", error)
+      );
   };
 
   function validaNumericos(event) {
@@ -227,15 +243,15 @@ function VistaParcial() {
     return false;
   }
 
-  const descripcionc = () => {
-    const Descripcion = `${vistaParcial[0].descriSpa} ${
-      listarEsfuerzo[esfuerzo - 1].tipoEsfuerzo
-    } fc=${listarValorEsfuerzo[valorEsfuerzo - 1].Valor}${
-      listarUnidadesMedida[uValorEsfuerzo - 1].Unidad
-    } ${listarTipoResistencia[resistenciaValorEsfuerzo - 1].Tipo}`;
-    console.log(Descripcion);
-    setDatosModal(Descripcion);
-  };
+  // const descripcionc = () => {
+  //   const Descripcion = `${vistaParcial[0].descriSpa} ${
+  //     listarEsfuerzo[esfuerzo - 1].tipoEsfuerzo
+  //   } fc=${listarValorEsfuerzo[valorEsfuerzo - 1].Valor}${
+  //     listarUnidadesMedida[uValorEsfuerzo - 1].Unidad
+  //   } ${listarTipoResistencia[resistenciaValorEsfuerzo - 1].Tipo}`;
+  //   console.log(Descripcion);
+  //   setDatosModal(Descripcion);
+  // };
 
   var datooo = {
     0: [76, 78, 79],
@@ -248,6 +264,8 @@ function VistaParcial() {
     7: [38, 37],
   };
 
+  const [datoTipoDeResitencia, setDatoTipoDeResitencia] = React.useState(null);
+  console.log(datoTipoDeResitencia);
   return (
     <div className="container bg-light border">
       <br />
@@ -295,31 +313,23 @@ function VistaParcial() {
       </div>
 
       <div className="row gy-2 justify-content-between my-2">
-        {/* <!--Esfuerzo--> */}
-        <label className="col-md-2 control-label">
-          Esfuerzo:
-          <select
-            onChange={(e) => setEsfuerzo(e.target.value)}
-            className="form-select form-select-sm"
-            name="idEsfuerzo"
-          >
-            <option>Selecciona...</option>
-            {
-              <option value={1}>
-                Resistencia a la compresión del concreto
-              </option>
-            }
-          </select>
-        </label>
         {/* <!--ValorEsfuerzo--> */}
         <label className="col-md-2 control-label">
           fc:
           <select
-            onChange={(e) => setValorEsfuerzo(e.target.value)}
+            onChange={(e) => {
+              setValorEsfuerzo(e.target.value);
+              setDatoTipoDeResitencia(
+                listarValorEsfuerzo.filter(
+                  (val) => val.idValEsf == e.target.value
+                )[0].fk_TipoResist
+              );
+            }}
+            id={datoTipoDeResitencia}
             className="form-select form-select-sm"
-            name="idValEsf"
+            name={valorEsfuerzo}
           >
-            <option value="">Selecciona...</option>
+            <option value={1}>Selecciona...</option>
             {listarValorEsfuerzo.map((valorEs, index) => (
               <option key={index} value={valorEs.idValEsf}>
                 {valorEs.Valor}
@@ -358,16 +368,40 @@ function VistaParcial() {
         <label className="col-md-2 control-label">
           Tipo Resistencia:
           <select
+            disabled
             onChange={(e) => setResistenciaValorEsfuerzo(e.target.value)}
             className="form-select form-select-sm"
             name="idTipoResist"
           >
-            <option value="">Selecciona...</option>
-            {listarTipoResistencia.map((value, index) => (
+            {datoTipoDeResitencia ? (
+              <option value={datoTipoDeResitencia}>
+                {listarTipoResistencia[datoTipoDeResitencia - 1].Tipo}
+              </option>
+            ) : (
+              <option value={null}>Sin resistencias</option>
+            )}
+            {/* <option value="">{listarTipoResistencia[1].Tipo}</option> */}
+            {/* {listarTipoResistencia.map((value, index) => (
               <option key={index} value={value.idTipoResist}>
                 {value.Tipo}
               </option>
-            ))}
+            ))} */}
+          </select>
+        </label>
+        {/* <!--Esfuerzo--> */}
+        <label className="col-md-2 control-label">
+          Esfuerzo:
+          <select
+            onChange={(e) => setEsfuerzo(e.target.value)}
+            className="form-select form-select-sm"
+            name="idEsfuerzo"
+            disabled
+          >
+            {
+              <option value={1}>
+                Resistencia a la compresión del concreto
+              </option>
+            }
           </select>
         </label>
         {/* <!--AplPrincipales--> */}
@@ -842,7 +876,7 @@ function VistaParcial() {
         <button
           type="submit"
           className="btn btn-success mt-5"
-          onClick={crearDatosDeMateriales}
+          onClick={() => crearDatosDeMateriales()}
         >
           Registrar
         </button>

@@ -2,12 +2,16 @@ import React from "react";
 import { TableContext } from "../../context/Materiales/TableContext";
 import { RiFileEditFill } from "react-icons/ri";
 import { BiExport } from "react-icons/bi";
+import { AiFillSetting } from "react-icons/ai";
 import { Estructura } from "./Estructura";
 import "./TableApi.css";
 import { ModalMateriales } from "./ModalMateriales";
 import { CSVLink } from "react-csv";
-import OverlayTrigger from "react-bootstrap/OverlayTrigger";
-import Tooltip from "react-bootstrap/Tooltip";
+import { Link } from "react-router-dom";
+import { Clasificacion } from "./Clasificacion";
+import { styled } from "@mui/material/styles";
+import Tooltip, { tooltipClasses } from "@mui/material/Tooltip";
+import { SwipeableTemporaryDrawer } from "./SwipeableTemporaryDrawer";
 
 function ListaDeMateriales() {
   const {
@@ -23,13 +27,14 @@ function ListaDeMateriales() {
     listarFibraConcre,
     listarClasExposicion,
     listarSistColocacion,
+    listarConcretosMaterialesCopia,
+    setListarConcretosMaterialesCopia,
+    estructura,
   } = React.useContext(TableContext);
-
-  const [estructura, setEstructura] = React.useState(false);
 
   const datosGenerales = {
     numMat: "numMat",
-    CodigoOmc23: "Código",
+    codigoOmc: "Código",
     Consecutivo: "No.",
     descriCorta: "Descripción Corta",
     descriLarga: "Descripción Larga",
@@ -97,65 +102,88 @@ function ListaDeMateriales() {
   //   "tipoSistema",
   // ];
 
+  const [busqueda, setBusqueda] = React.useState("");
+  const [busqueda2, setBusqueda2] = React.useState("");
+
+  const hangleChange = (e) => {
+    setBusqueda(e.target.value);
+    console.log(e.target.value);
+    filtrar(e.target.value);
+  };
+
+  const filtrar = (datoo) => {
+    const resultadoSinNull = listarConcretosMateriales.filter(
+      (x) => x.descriCorta !== null
+    );
+    if (datoo.length === 0) {
+      return setListarConcretosMaterialesCopia(listarConcretosMateriales);
+    } else {
+      var resultadoBusqueda = resultadoSinNull.filter((elemento) => {
+        if (
+          elemento.codigoOmc.toLowerCase().includes(datoo.toLowerCase()) ||
+          elemento.descriCorta.toLowerCase().includes(datoo.toLowerCase())
+        ) {
+          return elemento;
+        }
+      });
+      setListarConcretosMaterialesCopia(resultadoBusqueda);
+    }
+  };
+
+  const hangleChange2 = (e) => {
+    setBusqueda2(e.target.value);
+    filtradoEspecial(e.target.value);
+    console.log(e.target.value);
+  };
+
+  const filtradoEspecial = (terminoDeBusqueda) => {
+    var resultadoBusqueda2 = listarConcretosMateriales.filter((elemento) => {
+      if (
+        elemento.valRev
+          .toLowerCase()
+          .includes(terminoDeBusqueda.toLowerCase()) ||
+        elemento.valTma.toLowerCase().includes(terminoDeBusqueda.toLowerCase())
+      ) {
+        return elemento;
+      }
+    });
+    setListarConcretosMaterialesCopia(resultadoBusqueda2);
+  };
+
+  const BootstrapTooltip = styled(({ className, ...props }) => (
+    <Tooltip {...props} arrow classes={{ popper: className }} />
+  ))(({ theme }) => ({
+    [`& .${tooltipClasses.arrow}`]: {
+      color: theme.palette.common.black,
+    },
+    [`& .${tooltipClasses.tooltip}`]: {
+      backgroundColor: theme.palette.common.black,
+    },
+  }));
   return (
-    <div className="container vh-100">
+    <div className="container mt-5 pt-4">
       <h2 className="h1 text-center">LISTA DE MATERIALES/PRODUCTOS</h2>
       <br />
-      <h2 className="h2">Selecciona una clasificación</h2>
-      <div className="row text-center">
-        <div className="d-grid col-12 col-md-3 py-2">
-          <span className="btn btn-sm btn-dark fw-bold">
-            Acondicionamiento del terreno
-          </span>
-        </div>
-        <div className="d-grid col-12 col-md-3 py-2">
-          <span className="btn btn-sm btn-dark fw-bold">Cimientos</span>
-        </div>
-        <div className="d-grid col-12 col-md-3 py-2">
-          <span
-            className="btn btn-sm btn-dark fw-bold"
-            onClick={() => setEstructura(!estructura)}
-          >
-            Estructuras
-          </span>
-        </div>
-        <div className="d-grid col-12 col-md-3 py-2">
-          <span className="btn btn-sm btn-dark fw-bold">
-            Fachadas y muros divisorios
-          </span>
-        </div>
-      </div>
-      <div className="row text-center">
-        <div className="d-grid col-12 col-md-3 py-2">
-          <span className="btn btn-sm btn-dark fw-bold">Remates y ayudas</span>
-        </div>
-        <div className="d-grid col-12 col-md-3 py-2">
-          <span className="btn btn-sm btn-dark fw-bold">
-            Firmes y pavimentos urbanos
-          </span>
-        </div>
-        <div className="d-grid col-12 col-md-3 py-2">
-          <span className="btn btn-sm btn-dark fw-bold">Instalaciones</span>
-        </div>
-        <div className="d-grid col-12 col-md-3 py-2">
-          <span className="btn btn-sm btn-dark fw-bold">
-            Equipamiento urbano
-          </span>
-        </div>
-      </div>
+      <h2 className="h2 text-center my-2">Selecciona una clasificación</h2>
+      <Clasificacion />
       {estructura && <Estructura />}
       <br />
-      <div className="row justify-content-between">
+      {/* <div className="row justify-content-between">
         <div className="col-12 col-md-2 py-2">
           <select name="" id="" className="form-select">
             <option value="">Clase</option>
           </select>
         </div>
         <div className="col-12 col-md-2 py-2">
-          <select name="" id="" className="form-select">
+          <select
+            name=""
+            id=""
+            onChange={hangleChange2}
+            className="form-select"
+          >
             <option value="">TMA</option>
             {listarTMA.map((value, index) => (
-              <option key={index} value={value.idTma}>
+              <option key={index} value={value.valTma}>
                 {value.valTma}
               </option>
             ))}
@@ -191,24 +219,37 @@ function ListaDeMateriales() {
             ))}
           </select>
         </div>
-      </div>
+      </div> */}
       <br />
-      <div style={{ textAlign: "end" }}>
-        <OverlayTrigger
-          placement="left"
-          overlay={<Tooltip id="tooltip-disabled">Exportar a CSV</Tooltip>}
-        >
+      <div className="row">
+        <div className="col-6 d-flex" role="search">
+          <input
+            className="form-control w-75"
+            type="search"
+            placeholder="Search"
+            width={"80% !important"}
+            aria-label="Search"
+            onChange={hangleChange}
+          />
+          <button className="btn btn-outline-success" type="submit">
+            Search
+          </button>
+        </div>
+        <div className="col-2"></div>
+        <div className="col-4 d-flex align-items-end justify-content-end">
+          <SwipeableTemporaryDrawer />
           <CSVLink
             data={listarConcretosMateriales}
-            filename={"listarConcretosMateriales.xls"}
+            filename={"listarConcretosMateriales.txt"}
             className="h3 me-1 text-success"
           >
-            <BiExport />
+            <BootstrapTooltip title="Descargar archivo">
+              <BiExport />
+            </BootstrapTooltip>
           </CSVLink>
-        </OverlayTrigger>
-        <ModalMateriales className="justify-aling-end" />
+          <ModalMateriales className="justify-aling-end" />
+        </div>
       </div>
-
       <div className="table-responsive">
         <table className="table">
           <thead>
@@ -222,7 +263,7 @@ function ListaDeMateriales() {
             </tr>
           </thead>
           <tbody>
-            {listarConcretosMateriales.map((material, index) => (
+            {listarConcretosMaterialesCopia.map((material, index) => (
               <tr key={index} id="table-materials" className="seleccion">
                 {datoBaseTabla.map((item, index) => (
                   <td key={index}>{material[`${item}`]}</td>
@@ -268,10 +309,15 @@ function ListaDeMateriales() {
           </select>
         </div>
         <div className="col-12 col-md-2 py-2">
-          <select name="" id="" className="form-select">
+          <select
+            name=""
+            id=""
+            onChange={hangleChange2}
+            className="form-select"
+          >
             <option value="">Valor de revenimiento</option>
             {listarRevenimiento.map((value, index) => (
-              <option key={index} value={value.idReven}>
+              <option key={index} value={value.valRev}>
                 {value.valRev}
               </option>
             ))}
@@ -344,6 +390,8 @@ function ListaDeMateriales() {
           ))}
         </tbody>
       </table> */}
+
+      {/* <Test /> */}
     </div>
   );
 }

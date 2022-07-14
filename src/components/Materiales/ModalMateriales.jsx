@@ -3,7 +3,7 @@ import { Modal } from "react-bootstrap";
 import React, { useState } from "react";
 import { Button } from "react-bootstrap";
 import { TableContext } from "../../context/Materiales/TableContext";
-import { AiFillSetting } from "react-icons/ai";
+import { FaFilter } from "react-icons/fa";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
 
@@ -24,10 +24,10 @@ function ModalMateriales() {
     <>
       <OverlayTrigger
         placement="right"
-        overlay={<Tooltip id="tooltip-disabled">Ajustes</Tooltip>}
+        overlay={<Tooltip id="tooltip-disabled">Añadir datos</Tooltip>}
       >
         <span>
-          <AiFillSetting
+          <FaFilter
             onClick={handleShow}
             className="h3 text-primary seleccionar"
           />

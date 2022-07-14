@@ -42,9 +42,11 @@ function TableProvider(props) {
   const [listarFibraConcre, setListarFibraConcre] = React.useState([])
   const [datosConcreto, setDatosConcreto] = React.useState([])
   const [listarConcretosMateriales, setListarConcretosMateriales] = React.useState([])
+  const [listarConcretosMaterialesCopia, setListarConcretosMaterialesCopia] = React.useState([])
   const [omniClass, setOmniClass] = React.useState(23)
   const [datosModal, setDatosModal] = React.useState('')
   const [datoBaseTabla, setDatoBaseTabla] = React.useState([]);
+  const [estructura, setEstructura] = React.useState(false);
 
 
   //UseEffect initializes the Api
@@ -58,7 +60,7 @@ function TableProvider(props) {
     baseURL: 'http://127.0.0.1:8000/',
     headers: {
       'Content-Type': 'application/json;charset=utf-8',
-      'Authorization': 'Token 7d6c96590e8daa16df57b5943066a7df76f1c6b3'
+      'Authorization': 'Token 205c3bb40fa617c74c4ea54e11ca65123554781b'
     }
   })
 
@@ -69,7 +71,7 @@ function TableProvider(props) {
 
   const datosBaseParaLaTabla = [
     "Consecutivo",
-    "CodigoOmc23",
+    "codigoOmc",
     "descriCorta",
     "SiglaEsf",
     "ValorEsfuerzo",
@@ -166,6 +168,7 @@ function TableProvider(props) {
 
     const { data: listarConcretosMaterial } = await api(`apiMateriales/ListarConcretosMateriales/`);
     await setListarConcretosMateriales(listarConcretosMaterial);
+    await setListarConcretosMaterialesCopia(listarConcretosMaterial);
 
     // await setDatosConcreto(Object.keys(listarConcretosMaterialesData[0]));
 
@@ -516,6 +519,9 @@ function TableProvider(props) {
       setOmniClass,
       apis,
       api,
+      listarConcretosMaterialesCopia,
+      setListarConcretosMaterialesCopia,
+      estructura, setEstructura,
     }}>
       {props.children}
     </TableContext.Provider>

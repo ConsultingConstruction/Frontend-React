@@ -83,7 +83,7 @@
   .nav_link{text-decoration: none; position: relative;color: var(--first-color-light);margin-bottom: 1.5rem;transition: .3s}
   .nav_link:hover{color: var(--white-color)}
   .nav_icon{font-size: 1.25rem}
-  .show{left: 0}
+  .show-navbar{left: 0}
   .body-pd{padding-left: calc(var(--nav-width) + 1rem)}
   .active{color: var(--white-color)}
   .active::before{content: '';position: absolute;left: 0;width: 2px;height: 32px;background-color: var(--white-color)}
@@ -92,7 +92,7 @@
   .header_img{width: 40px;height: 40px}
   .header_img img{width: 45px}
   .l-navbar{left: 0;padding: 1rem 1rem 0 0}
-  .show{width: calc(var(--nav-width) + 256px)}
+  .show-navbar{width: calc(var(--nav-width) + 256px)}
   .body-pd{padding-left: calc(var(--nav-width) + 188px)}}
 
   .avatarImg{

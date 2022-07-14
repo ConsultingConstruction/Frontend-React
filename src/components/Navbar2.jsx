@@ -25,7 +25,7 @@ export default function Navbar() {
     subListM.setAttribute("hidden", "none");
     subListP.setAttribute("hidden", "none");
     // // show navbar
-    nav.classList.toggle("show");
+    nav.classList.toggle("show-navbar");
     // change icon
     toggle.classList.toggle("bx-x");
     //recorrer icon close
